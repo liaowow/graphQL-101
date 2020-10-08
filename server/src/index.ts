@@ -1,12 +1,20 @@
 import express from 'express'
-import bodyParser from 'body-parser'
-import { listings } from './listings'
+import { ApolloServer } from 'apollo-server-express'
+import { schema } from './graphql'
 
 const app = express()
 const port = 9000
 
-app.use(bodyParser.json())
+const server = new ApolloServer({ schema })
+server.applyMiddleware({app, path: '/api'})
 
+app.listen(port)
+
+console.log(`[app]: http://localhost:${port}`)
+
+
+
+/* BEFORE APOLLO SERVER
 // get listings
 app.get('/listings', (_req, res) => {
   return res.send(listings)
@@ -24,6 +32,4 @@ app.post('/delete-listing', (req, res) => {
   res.send('failed to delete listing')
 })
 
-app.listen(port)
-
-console.log(`[app]: http://localhost:${port}`)
+*/
